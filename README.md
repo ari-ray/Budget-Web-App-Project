@@ -37,4 +37,5 @@ Built as a personal project to demonstrate full-stack fundamentals and UI intera
 
 ## AUTHOR
 Arittri Ray
-Software Engineering
+
+Software Engineering | Learning Web Development Fundamentals
