@@ -1,0 +1,216 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Budget App</title>
+    <link rel="stylesheet" href="{{ url_for('static', filename='style.css') }}">
+    <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+</head>
+    <body>
+        <div id="hero">
+            <div class = "input-card">
+                <h1 align = "center"> Budget App: Finance Tracker </h1>
+                <form method = "POST">
+                    Name: <input type="text" autocomplete="off" name="name" required>
+                    Amount: <input type="number" autocomplete="off" step="0.01" min="0.01" name="amount" required>
+                    Type:
+                    <select name="type" autocomplete="off" id="typeSelect" required>
+                        <option value="" selected disabled>Select Type</option>
+                        <option value="Income">Income</option>
+                        <option value="Expense">Expense</option>
+                    </select>
+
+                    <!-- Income categories -->
+                    <select name="categoryIncome" id="incomeCategory" style="display:none;">
+                        <option value="Salary">Salary</option>
+                        <option value="Freelance">Freelance</option>
+                        <option value="Investment">Investment</option>
+                        <option value="Other">Other</option>
+                    </select>
+
+                    <!-- Expense categories -->
+                    <select name="categoryExpense" id="expenseCategory" required>
+                        <option value="Food">Food</option>
+                        <option value="Transport">Transport</option>
+                        <option value="Bills">Bills</option>
+                        <option value="Entertainment">Entertainment</option>
+                        <option value="Other">Other</option>
+                    </select>
+                    <button type="submit">Add</button>
+                </form>
+                {% if expenses or income %}
+                    <div class="form-actions" style="text-align:center; margin-top:10px;">
+                        <form action="/reset" method="POST" style="display:inline-block; margin-right:10px;"
+                              onsubmit="return confirm('Are you sure you want to reset all data?')">
+                            <button type="submit" class="danger-btn">Reset All</button>
+                        </form>
+
+                        <a href="/export/csv" class="csv-btn" style="display:inline-block;">
+                            Download CSV
+                        </a>
+                    </div>
+                {% endif %}
+            </div>
+        </div>
+
+        {% if expenses or income %}
+        <div class = "tracker-row">
+            <div class="tracker-card">
+                <h1 align = "center">Total Expense by Category</h1>
+                <ul>
+                    {% for cat, amount in categories.items() %}
+                        <li>{{ cat }}: ${{ amount }}</li>
+                    {% endfor %}
+                </ul>
+            </div>
+
+            <div class="tracker-card">
+                <h1 align = "center"> Entries </h1>
+                <hr>
+                <h4>Expense</h4>
+                <ul>
+                  {% for e in expenses %}
+                    <li>{{ e[1] | upper }} - {{ e[3] }} - ${{ e[2] }}
+                        <a href="/delete/expenses/{{ e[0] }}" style="color:red; text-decoration:none;" onclick="return confirm('Are you sure?')">
+                            Delete
+                        </a>
+                    </li>
+                  {% endfor %}
+                </ul>
+                <hr>
+                <h4>Income</h4>
+                <ul>
+                  {% for i in income %}
+                    <li>{{ i[1] | upper }} - {{ i[3] }} - ${{ i[2] }}
+                        <a href="/delete/income/{{ i[0] }}" style="color:red; text-decoration:none;" onclick="return confirm('Are you sure?')">
+                            Delete
+                        </a>
+                    </li>
+                  {% endfor %}
+                </ul>
+            </div>
+
+            <div class="tracker-card">
+                <h1 align = "center"> Total Income by Category</h1>
+                <ul>
+                    {% for cat1, amount in categories1.items() %}
+                        <li>{{ cat1 }} : ${{ amount }}</li>
+                    {% endfor %}
+                </ul>
+            </div>
+
+            <br>
+        </div>
+        <div class = "totals-card">
+            <h1 align = "center"> Totals</h1>
+            <p align="center">Total Income: ${{ total_income }} | Total Expense: ${{ total_expense }} | Net Balance: ${{ total_income - total_expense }}</p>
+            <br>
+            <form action="/reset" method="POST" onsubmit="return confirm('Are you sure you want to reset all data?')">
+                <button type="submit" style="color:red;">
+                    Reset All Data
+                </button>
+            </form>
+        </div>
+
+        <div class="charts-row">
+            <div class="chart-card">
+                <h3>Expense Breakdown</h3>
+                <canvas id="expensePie"></canvas>
+            </div>
+
+            <div class="chart-card">
+                <h3>Income vs Expense</h3>
+                <br>
+                <canvas id="incomeExpenseBar"></canvas>
+            </div>
+
+            <div class="chart-card">
+                <h3>Income Breakdown</h3>
+                <canvas id="incomePie"></canvas>
+            </div>
+        </div>
+        {% endif %}
+
+
+        <script>
+            const hero = document.getElementById("hero");
+            const form = document.querySelector("form");
+            const trackerRow = document.querySelector(".tracker-row");
+            const chartsRow = document.querySelector(".charts-row");
+
+            form.addEventListener("submit", function() {
+                hero.classList.remove("centered");
+                hero.classList.add("up");
+                document.querySelector(".tracker-row").style.display = "flex";
+                document.querySelector(".charts-row").style.display = "flex";
+
+                chartsRow.classList.add("show");
+            });
+
+            const typeSelect = document.getElementById("typeSelect");
+            const incomeCategory = document.getElementById("incomeCategory");
+            const expenseCategory = document.getElementById("expenseCategory");
+
+            incomeCategory.style.display = "none";
+            expenseCategory.style.display = "none";
+
+            typeSelect.addEventListener("change", function() {
+                if (typeSelect.value === "Income") {
+                    incomeCategory.style.display = "inline";
+                    incomeCategory.required = true;
+                    expenseCategory.style.display = "none";
+                    expenseCategory.required = false;
+                }
+
+                else {
+                    incomeCategory.style.display = "none";
+                    incomeCategory.required = false;
+                    expenseCategory.style.display = "inline";
+                    expenseCategory.required = true;
+                }
+            });
+
+
+            document.addEventListener("DOMContentLoaded", function() {
+
+                const categoryData = {{ categories_json | default('{}') | safe }};
+                const category1Data = {{ categories1_json | default('{}') | safe }};
+                const totalsData = {{ totals_json | default('{}') | safe }};
+
+                if (Object.keys(categoryData).length > 0) {
+                    new Chart(document.getElementById("expensePie"), {
+                        type: "pie",
+                        data: {
+                            labels: Object.keys(categoryData),
+                            datasets: [{ data: Object.values(categoryData) }]
+                        }
+                    });
+                }
+
+                if (Object.values(totalsData).some(val => val > 0)) {
+                    new Chart(document.getElementById("incomeExpenseBar"), {
+                        type: "bar",
+                        data: {
+                            labels: Object.keys(totalsData),
+                            datasets: [{ data: Object.values(totalsData) }]
+                        },
+                        options: {
+                            scales: { y: { beginAtZero: true } }
+                        }
+                    });
+                }
+
+                if (Object.keys(category1Data).length > 0) {
+                    new Chart(document.getElementById("incomePie"), {
+                        type: "pie",
+                        data: {
+                            labels: Object.keys(category1Data),
+                            datasets: [{ data: Object.values(category1Data) }]
+                        }
+                    });
+                }
+            });
+        </script>
+
+    </body>
+</html>
