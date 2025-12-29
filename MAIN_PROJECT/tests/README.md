@@ -1,6 +1,7 @@
 # Budget Web App - TESTS
 
 This folder contains the **tests** for the Budget Web App.
+
 The tests are designed to verify the correctness, validation and basic functionality of the application.
 
 ---
