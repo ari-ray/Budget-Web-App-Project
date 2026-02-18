@@ -5,7 +5,7 @@ A web-based budget and finance tracking application built using Flask, HTML, CSS
 This is just the prototype.
 **The main Project is stored in the "MAIN_PROJECT" directory of this repository.**
 
-The project was initiated to develop an undersatanding of full-stack development. The prototype only used in-memory storage and did not include validation. Later in the **refactored version in the "MAIN_PROJECT"** directory, a database has been integrated, validation has been added and functionalities have been improved. The repository shows the learning curve of the full-stack development from the prototype to the refactored version.
+The project was initiated to develop an understanding of full-stack development. The prototype only used in-memory storage and did not include validation. Later in the **refactored version in the "MAIN_PROJECT"** directory, a database has been integrated, validation has been added and functionalities have been improved. The repository shows the learning curve of the full-stack development from the prototype to the refactored version.
 
 ## Features 
 - Add Income and Expense entries
