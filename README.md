@@ -1,5 +1,6 @@
-# Budget-Web-App-Project: PROTOTYPE & REFACTORED VERSION
-## Refactored Version: https://budgetup-sd67.onrender.com
+# Budget-Web-App-Project (BUDGETUP) : PROTOTYPE & REFACTORED VERSION
+
+🚀 **[Try BudgetUp Live](https://budgetup-sd67.onrender.com)**
 
 A web-based budget and finance tracking application built using Flask, HTML, CSS and JavaScript and later integrated with database and CSV export function.
 
@@ -29,12 +30,12 @@ The project was initiated to develop an understanding of full-stack development.
 Built as a personal project to demonstrate full-stack fundamentals and UI interactivity.
 
 ## Planned Improvements for Prototype (Later added to the Refactored Version in the "MAIN_PROJECT" directory)
-- Database integration for storage
-- Input validation and error handling
-- Tests files for core logic
-- Downloadable CSV of financial data
-- Improved accessibility and UI/UX enhancements
-- Deployment
+- Database integration for storage ✅
+- Input validation and error handling ✅
+- Tests files for core logic ✅
+- Downloadable CSV of financial data ✅
+- Improved accessibility and UI/UX enhancements ✅
+- Deployment ✅
 
 ## AUTHOR
 Arittri Ray
