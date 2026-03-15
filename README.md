@@ -1,6 +1,6 @@
 # Budget-Web-App-Project (BUDGETUP) : PROTOTYPE & REFACTORED VERSION
 
-🚀 **[Try BudgetUp Live](https://budgetup-sd67.onrender.com)**
+🚀 **Link: https://budgetup-sd67.onrender.com**
 
 A web-based budget and finance tracking application built using Flask, HTML, CSS and JavaScript and later integrated with database and CSV export function.
 
