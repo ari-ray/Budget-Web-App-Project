@@ -1,4 +1,6 @@
-# Budget Web App - REFACTORED FINAL VERSION - https://budgetup-sd67.onrender.com
+# Budget Web App : REFACTORED FINAL VERSION 
+
+🚀 **[Try BudgetUp Live](https://budgetup-sd67.onrender.com)**
 
 This folder contains the ***refactored finalised version*** of the Budget Web App.
 
@@ -40,7 +42,7 @@ This project demonstrates building a robust full-stack web application with Pyth
 
 ---
 
-## How to Run
+## How to Run (Locally)
 
 - Install dependencies:
   
@@ -62,7 +64,7 @@ http:// 127.0.0.1:5000
 ## Project Evolution
 This refactored version is the **FINAL STAGE** of the project evolution
 - Prototype: In-memory storage, basic CRUD, no validation, no CSV export
-- Refactored: Database integration, persistant storage, validation, CSV export, improved UI
+- Refactored: Database integration, persistant storage, validation, CSV export, improved UI, deployed
 
 ---
 
