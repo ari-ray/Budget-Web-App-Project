@@ -1,6 +1,6 @@
 # Budget Web App - CSS
 
-This folder contains all the CSS files used in the BUdget Web App. The "style.css" file is the main stylesheet for the application, handling layout, colors and UI styling.
+This folder contains all the CSS files used in the Budget Web App. The "style.css" file is the main stylesheet for the application, handling layout, colors and UI styling.
 
 ---
 
